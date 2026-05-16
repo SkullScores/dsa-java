@@ -40,7 +40,7 @@ class Solution
         }
 
         //slow is now at the node BEFORE the one to delete
-        slow = slow.next.next;
+        slow.next = slow.next.next;
         return dummy.next;
     }
 }
