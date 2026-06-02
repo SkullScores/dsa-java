@@ -48,7 +48,7 @@ public class mergeSort
 
         while(right<=high)
         {
-            temp.add(arr[right])
+            temp.add(arr[right]);
             right++;
         }
 

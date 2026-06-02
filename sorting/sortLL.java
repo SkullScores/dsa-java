@@ -14,7 +14,7 @@ class Solution
 {
 
     // BruteForce 1: TC=O(2n+nlogn), SC=O(2n)
-    public ListNode sortList(ListNode head) 
+    public ListNode bruteForce_1(ListNode head) 
     {
         if(head==null || head.next==null)
         {
@@ -75,5 +75,72 @@ class Solution
         return head;
     }
 
-    
+    //Optimal: using MergeSort
+
+    public ListNode sortLL(ListNode head) 
+    {
+        if(head==null || head.next==null)
+        {
+            return head;
+        }
+
+        ListNode middle = findMiddle(head);
+        ListNode leftHead = head;
+        ListNode rightHead = middle.next;
+
+        middle.next = null;
+
+        leftHead = sortLL(leftHead);
+        rightHead = sortLL(rightHead);
+
+        return merge2LL(leftHead, rightHead);
+    }
+
+    // MODIFIED HARE-TORTOISE ALGO (I want 1st middle... standard algo returns 2nd middle)
+    private ListNode findMiddle(ListNode head)
+    {
+        ListNode slow = head;
+        ListNode fast = head.next; // Edge case!
+
+        while(fast!=null && fast.next!=null)
+        {
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return slow;
+    }
+
+    private ListNode merge2LL(ListNode leftHead, ListNode rightHead)
+    {
+        ListNode dummy = new ListNode(-1, null);
+        ListNode temp = dummy;
+
+        while(leftHead!=null && rightHead!=null)
+        {
+            if(leftHead.val <= rightHead.val)
+            {
+                temp.next = leftHead;
+                temp = temp.next;
+                leftHead = leftHead.next;
+            }
+            else
+            {
+                temp.next = rightHead;
+                temp = temp.next;
+                rightHead = rightHead.next;
+            }
+        }
+
+        if(leftHead!=null)
+        {
+            temp.next = leftHead;
+        }
+        else
+        {
+            temp.next = rightHead;
+        }
+        return dummy.next;
+    }
+
+
 }
