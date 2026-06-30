@@ -33,12 +33,12 @@ public class maxWidthOfBT
         while(!q.isEmpty())
         {
             int size = q.size(); //freezes that level
-            int min = q.peek().idx; //to make the idx starting from zero
+            int minIdx = q.peek().idx; //to make the idx starting from zero... solves overflow error
             int first = 0, last = 0;
             
             for(int i=0; i<size; i++)
             {
-                int currIdx = q.peek().idx;
+                int currIdx = q.peek().idx - minIdx;
                 TreeNode currNode = q.peek().node;
 
                 q.remove();
