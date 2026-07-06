@@ -63,7 +63,11 @@ class Solution
         return memo(0,3,dp,matrix);
     }
 
-    // Tabulation
+    // Striver's Tabulation
+
+    // dp[day][last] as:
+    // maximum points obtainable from day 0 to day, if on the current day we are forbidden from doing activity last
+
     public int tab(int[][] matrix)
     {
         int n = matrix.length;
@@ -72,7 +76,6 @@ class Solution
         dp[0][0] = Math.max(matrix[0][1], matrix[0][2]);
         dp[0][1] = Math.max(matrix[0][0], matrix[0][2]);
         dp[0][2] = Math.max(matrix[0][0], matrix[0][1]);
-        for(int i=0; i<3; i++)
         dp[0][3] = Math.max(dp[0][0], Math.max(dp[0][1],dp[0][2]));
         
         for(int day=1; day<n; day++)
@@ -93,5 +96,40 @@ class Solution
             }
         }
         return dp[n-1][3];
+    }
+
+    // Space Optimization
+    public int space_optimized(int[][] matrix)
+    {
+        int n = matrix.length;
+        // I'll make the first 4 array
+        int[] prev = new int[4];
+
+        prev[0] = Math.max(matrix[0][1], matrix[0][2]);
+        prev[1] = Math.max(matrix[0][0], matrix[0][2]);
+        prev[2] = Math.max(matrix[0][0], matrix[0][1]);
+        prev[3] = Math.max(dp[0], Math.max(dp[1],dp[2]));
+        
+        for(int day=1; day<n; day++)
+        {
+            // for every day, there are 4 different task values
+            int[] temp = new int[4];
+            for(int last=0; last<4; last++)
+            {
+                // Now just copy paste the recursion part
+                temp[last] = 0;
+
+                for(int task=0; task<3; task++)
+                {
+                    // in a way temp stores dp[day] i.e. the day
+                    if(task!=last)
+                    {
+                        temp[last] = Math.max(temp[last], matrix[day][task]+prev[task]);
+                    }
+                }
+                prev = temp;
+            }
+        }
+        return prev[3];
     }
 }

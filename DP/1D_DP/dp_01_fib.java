@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class dp_1
+public class dp_01_fib
 {
     public int f(int n, int[] dp)
     {
